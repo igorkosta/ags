@@ -12,6 +12,15 @@ function categoriesSummary(skills: SkillEntry[]): string {
   return sorted.map(([cat, n]) => `${cat} (${n})`).join(", ");
 }
 
+function matchingSkills(skills: SkillEntry[], query: string): SkillEntry[] {
+  const q = query.toLowerCase();
+  return skills.filter((skill) => {
+    if (skill.name.toLowerCase().includes(q)) return true;
+    if (skill.category && skill.category.toLowerCase().includes(q)) return true;
+    return false;
+  });
+}
+
 export async function search(query: string): Promise<void> {
   const { listSources } = await import("../core/config.js");
   const { fetchRegistry, searchRegistry } = await import("../core/registry.js");
@@ -35,6 +44,15 @@ export async function search(query: string): Promise<void> {
     lines.push(`  latest: ${entry.latest}  |  ${counts}  |  platforms: ${entry.platforms.join(", ")}`);
     if (entry.skills && entry.skills.length > 0) {
       lines.push(`  categories: ${categoriesSummary(entry.skills)}`);
+
+      const matched = matchingSkills(entry.skills, query);
+      if (matched.length > 0) {
+        for (const skill of matched) {
+          const tag = skill.category ? ` (${skill.category})` : "";
+          const desc = skill.description ?? "";
+          lines.push(`    ${skill.name}${tag}  ${desc}`);
+        }
+      }
     }
     lines.push("");
   }

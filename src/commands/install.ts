@@ -23,7 +23,7 @@ export async function install(
   }
 
   const dest = resolvePackageDir(pkgName, options);
-  const agent = options.global ? (options.agent ?? process.env.ASM_AGENT ?? "opencode") : "local";
+  const agent = options.global ? (options.agent ?? process.env.AGS_AGENT ?? "opencode") : "local";
 
   console.log(`Installing '${pkgName}' (${entry.latest})...`);
 

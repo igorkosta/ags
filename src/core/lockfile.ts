@@ -3,7 +3,7 @@ import { join } from "path";
 import type { Lockfile, LockfileEntry } from "../types/index.js";
 
 export function lockfilePath(rootDir: string): string {
-  return join(rootDir, "asm-lock.json");
+  return join(rootDir, "ags-lock.json");
 }
 
 export function readLockfile(rootDir: string): Lockfile {

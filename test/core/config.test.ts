@@ -6,13 +6,13 @@ import { tmpdir } from "os";
 let tmpDir: string;
 
 beforeEach(() => {
-  tmpDir = mkdtempSync(join(tmpdir(), "asm-config-test-"));
-  process.env.ASM_CONFIG_DIR = tmpDir;
+  tmpDir = mkdtempSync(join(tmpdir(), "ags-config-test-"));
+  process.env.AGS_CONFIG_DIR = tmpDir;
 });
 
 afterEach(() => {
   rmSync(tmpDir, { recursive: true, force: true });
-  delete process.env.ASM_CONFIG_DIR;
+  delete process.env.AGS_CONFIG_DIR;
 });
 
 describe("readConfig", () => {

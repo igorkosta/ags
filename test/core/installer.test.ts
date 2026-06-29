@@ -8,12 +8,12 @@ let fixtureBuffer: Buffer;
 let fixtureDest: string;
 
 beforeAll(async () => {
-  const tmp = mkdtempSync(join(tmpdir(), "asm-install-fixture-"));
+  const tmp = mkdtempSync(join(tmpdir(), "ags-install-fixture-"));
   const topDir = join(tmp, "fake-pkg-1.0.0");
   const skillsDir = join(topDir, "skills", "test-skill");
   mkdirSync(skillsDir, { recursive: true });
   writeFileSync(join(skillsDir, "SKILL.md"), "# Test Skill\nHello world\n");
-  writeFileSync(join(topDir, "asm.json"), JSON.stringify({ name: "fake-pkg" }));
+  writeFileSync(join(topDir, "ags.json"), JSON.stringify({ name: "fake-pkg" }));
 
   const stream = tar.c(
     { cwd: tmp, portable: true, gzip: true },
@@ -33,7 +33,7 @@ beforeAll(async () => {
 });
 
 beforeEach(() => {
-  fixtureDest = mkdtempSync(join(tmpdir(), "asm-install-test-"));
+  fixtureDest = mkdtempSync(join(tmpdir(), "ags-install-test-"));
 });
 
 afterEach(() => {
@@ -60,7 +60,7 @@ describe("downloadPackage", () => {
 
     expect(result.integrity).toMatch(/^sha256-/);
     expect(result.resolved).toContain("fake-pkg/archive/1.0.0.tar.gz");
-    expect(existsSync(join(fixtureDest, "asm.json"))).toBe(true);
+    expect(existsSync(join(fixtureDest, "ags.json"))).toBe(true);
     expect(existsSync(join(fixtureDest, "skills", "test-skill", "SKILL.md"))).toBe(true);
 
     const content = readFileSync(join(fixtureDest, "skills", "test-skill", "SKILL.md"), "utf-8");
@@ -134,6 +134,6 @@ describe("installPackage", () => {
     const result = await installPackage("fake-pkg", entry, fixtureDest);
 
     expect(result.integrity).toMatch(/^sha256-/);
-    expect(existsSync(join(fixtureDest, "asm.json"))).toBe(true);
+    expect(existsSync(join(fixtureDest, "ags.json"))).toBe(true);
   });
 });

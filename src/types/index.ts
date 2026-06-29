@@ -4,12 +4,13 @@ export interface Source {
   apiBaseUrl?: string;
 }
 
-export interface AsmConfig {
+export interface AgsConfig {
   sources: Source[];
 }
 
 export interface SkillEntry {
   name: string;
+  description?: string;
   category?: string;
 }
 

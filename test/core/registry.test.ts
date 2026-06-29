@@ -62,7 +62,7 @@ describe("fetchRegistry", () => {
     expect(result["audit-tool"].latest).toBe("1.0.0");
   });
 
-  it("skips source on non-200 and logs warning", async () => {
+  it("skips source on non-200 and falls back to default registry", async () => {
     global.fetch = mockFetch(null, 404);
     const { fetchRegistry } = await import("../../src/core/registry.js");
 
@@ -71,13 +71,14 @@ describe("fetchRegistry", () => {
     ];
     const result = await fetchRegistry(sources);
 
-    expect(result).toEqual({});
+    expect(Object.keys(result).length).toBeGreaterThan(0);
+    expect(result["addyosmani-agent-skills"]).toBeDefined();
     expect(console.error).toHaveBeenCalledWith(
       expect.stringContaining('"missing" returned 404'),
     );
   });
 
-  it("skips source on network error and logs warning", async () => {
+  it("skips source on network error and falls back to default registry", async () => {
     global.fetch = vi.fn().mockRejectedValue(new Error("ECONNREFUSED"));
     const { fetchRegistry } = await import("../../src/core/registry.js");
 
@@ -86,13 +87,14 @@ describe("fetchRegistry", () => {
     ];
     const result = await fetchRegistry(sources);
 
-    expect(result).toEqual({});
+    expect(Object.keys(result).length).toBeGreaterThan(0);
+    expect(result["addyosmani-agent-skills"]).toBeDefined();
     expect(console.error).toHaveBeenCalledWith(
       expect.stringContaining('"broken"'),
     );
   });
 
-  it("skips source on invalid JSON", async () => {
+  it("skips source on invalid JSON and falls back to default registry", async () => {
     global.fetch = vi.fn().mockResolvedValue({
       ok: true,
       status: 200,
@@ -105,7 +107,8 @@ describe("fetchRegistry", () => {
     ];
     const result = await fetchRegistry(sources);
 
-    expect(result).toEqual({});
+    expect(Object.keys(result).length).toBeGreaterThan(0);
+    expect(result["addyosmani-agent-skills"]).toBeDefined();
     expect(console.error).toHaveBeenCalledWith(
       expect.stringContaining('"bad-json"'),
     );

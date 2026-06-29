@@ -1,7 +1,7 @@
 import { existsSync, readFileSync, writeFileSync } from "fs";
 import { join } from "path";
 
-const ENTRY = "asm_modules/skills/";
+const ENTRY = "ags_modules/skills/";
 
 export function gitignorePath(rootDir: string): string {
   return join(rootDir, ".gitignore");

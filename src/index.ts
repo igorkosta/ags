@@ -5,15 +5,16 @@ import { Command } from "commander";
 const program = new Command();
 
 program
-  .name("asm")
+  .name("ags")
   .description("Agent Skills Manager — install, update, and manage AI agent skills")
   .version("0.1.0");
 
 program
   .command("install <pkg>")
+  .alias("i")
   .description("Install a package (all skills) or a specific skill (pkg/skill)")
   .option("--agent <name>", "Target agent (opencode, pi, claude)")
-  .option("--global", "Install globally for the target agent")
+  .option("-g, --global", "Install globally for the target agent")
   .action(async (pkg, options) => {
     const { install } = await import("./commands/install.js");
     await install(pkg, options);
@@ -21,9 +22,10 @@ program
 
 program
   .command("uninstall <pkg>")
+  .alias("un")
   .description("Remove a package or specific skill (pkg/skill)")
   .option("--agent <name>", "Target agent (opencode, pi, claude)")
-  .option("--global", "Remove from global install")
+  .option("-g, --global", "Remove from global install")
   .action(async (pkg, options) => {
     const { uninstall } = await import("./commands/uninstall.js");
     await uninstall(pkg, options);
@@ -31,9 +33,10 @@ program
 
 program
   .command("list")
+  .alias("ls")
   .description("List installed packages and their skills")
   .option("--agent <name>", "Filter by agent (opencode, pi, claude)")
-  .option("--global", "List global installs")
+  .option("-g, --global", "List global installs")
   .action(async (options) => {
     const { list } = await import("./commands/list.js");
     await list(options);
@@ -56,18 +59,22 @@ program
   });
 
 program
-  .command("init")
+  .command("init [name]")
   .description("Scaffold a new package")
-  .action(async () => {
+  .option("--description <desc>", "Package description")
+  .option("--version <semver>", "Package version")
+  .option("--repository <url>", "Repository URL")
+  .option("--platforms <list>", "Platforms (comma-separated)")
+  .action(async (name, options) => {
     const { init } = await import("./commands/init.js");
-    await init();
+    await init(name, options);
   });
 
 program
   .command("update [pkg]")
   .description("Update one or all packages to the latest version")
   .option("--agent <name>", "Target agent")
-  .option("--global", "Update global installs")
+  .option("-g, --global", "Update global installs")
   .action(async (pkg, options) => {
     const { update } = await import("./commands/update.js");
     await update(pkg, options);

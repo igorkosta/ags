@@ -7,7 +7,7 @@ let tmpDir: string;
 let gitignorePath: string;
 
 beforeEach(() => {
-  tmpDir = mkdtempSync(join(tmpdir(), "asm-gitignore-test-"));
+  tmpDir = mkdtempSync(join(tmpdir(), "ags-gitignore-test-"));
   gitignorePath = join(tmpDir, ".gitignore");
 });
 
@@ -22,7 +22,7 @@ describe("ensureGitignore", () => {
 
     expect(existsSync(gitignorePath)).toBe(true);
     const content = readFileSync(gitignorePath, "utf-8");
-    expect(content).toContain("asm_modules/skills/");
+    expect(content).toContain("ags_modules/skills/");
   });
 
   it("appends entry to existing .gitignore", async () => {
@@ -33,7 +33,7 @@ describe("ensureGitignore", () => {
 
     const content = readFileSync(gitignorePath, "utf-8");
     expect(content).toContain("node_modules/");
-    expect(content).toContain("asm_modules/skills/");
+    expect(content).toContain("ags_modules/skills/");
   });
 
   it("does not duplicate entry", async () => {
@@ -42,30 +42,30 @@ describe("ensureGitignore", () => {
     ensureGitignore(tmpDir);
 
     const content = readFileSync(gitignorePath, "utf-8");
-    const matches = content.match(/asm_modules\/skills\//g);
+    const matches = content.match(/ags_modules\/skills\//g);
     expect(matches).toHaveLength(1);
   });
 
   it("is a no-op when entry already present", async () => {
-    writeFileSync(gitignorePath, "asm_modules/skills/\n");
+    writeFileSync(gitignorePath, "ags_modules/skills/\n");
 
     const { ensureGitignore } = await import("../../src/core/gitignore.js");
     ensureGitignore(tmpDir);
 
     const content = readFileSync(gitignorePath, "utf-8");
-    expect(content).toBe("asm_modules/skills/\n");
+    expect(content).toBe("ags_modules/skills/\n");
   });
 });
 
 describe("removeGitignore", () => {
   it("removes the entry from .gitignore", async () => {
-    writeFileSync(gitignorePath, "node_modules/\nasm_modules/skills/\n.env\n");
+    writeFileSync(gitignorePath, "node_modules/\nags_modules/skills/\n.env\n");
 
     const { removeGitignore } = await import("../../src/core/gitignore.js");
     removeGitignore(tmpDir);
 
     const content = readFileSync(gitignorePath, "utf-8");
-    expect(content).not.toContain("asm_modules/skills/");
+    expect(content).not.toContain("ags_modules/skills/");
     expect(content).toContain("node_modules/");
     expect(content).toContain(".env");
   });

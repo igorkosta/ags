@@ -1,23 +1,23 @@
 import { existsSync, readdirSync, mkdirSync, readFileSync, writeFileSync } from "fs";
 import { homedir } from "os";
 import { join } from "path";
-import type { Source, AsmConfig } from "../types/index.js";
+import type { Source, AgsConfig } from "../types/index.js";
 
 export function configDir(): string {
-  return process.env.ASM_CONFIG_DIR ?? join(homedir(), ".config", "asm");
+  return process.env.AGS_CONFIG_DIR ?? join(homedir(), ".config", "ags");
 }
 
 export function configPath(): string {
   return join(configDir(), "config.json");
 }
 
-export function readConfig(): AsmConfig {
+export function readConfig(): AgsConfig {
   const path = configPath();
   if (!existsSync(path)) return { sources: [] };
-  return JSON.parse(readFileSync(path, "utf-8")) as AsmConfig;
+  return JSON.parse(readFileSync(path, "utf-8")) as AgsConfig;
 }
 
-export function writeConfig(config: AsmConfig): void {
+export function writeConfig(config: AgsConfig): void {
   ensureDir(configDir());
   writeFileSync(configPath(), JSON.stringify(config, null, 2) + "\n");
 }
@@ -45,7 +45,7 @@ export function listSources(): Source[] {
 
 export function resolveAgent(cliAgent?: string): string {
   if (cliAgent) return cliAgent;
-  if (process.env.ASM_AGENT) return process.env.ASM_AGENT;
+  if (process.env.AGS_AGENT) return process.env.AGS_AGENT;
 
   const agentsDir = join(homedir(), ".config");
   const installed: string[] = [];
@@ -64,7 +64,7 @@ export function resolveAgent(cliAgent?: string): string {
   if (installed.length === 1) return installed[0];
   if (installed.length === 0) {
     console.error(
-      "No agent detected. Use --agent <name> or set ASM_AGENT.",
+      "No agent detected. Use --agent <name> or set AGS_AGENT.",
     );
     process.exit(1);
   }
@@ -79,7 +79,7 @@ export function globalSkillsDir(agent: string): string {
 }
 
 export function localSkillsDir(): string {
-  return join(process.cwd(), "asm_modules", "skills");
+  return join(process.cwd(), "ags_modules", "skills");
 }
 
 export function resolvePackageDir(

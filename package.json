@@ -1,10 +1,10 @@
 {
-  "name": "asm",
+  "name": "ags",
   "version": "0.1.0",
   "description": "Agent Skills Manager — install, update, and manage AI agent skills",
   "type": "module",
   "bin": {
-    "asm": "./dist/index.js"
+    "ags": "./dist/index.js"
   },
   "files": [
     "dist/"

@@ -15,7 +15,7 @@ const sampleEntry: LockfileEntry = {
 };
 
 beforeEach(() => {
-  tmpDir = mkdtempSync(join(tmpdir(), "asm-lockfile-test-"));
+  tmpDir = mkdtempSync(join(tmpdir(), "ags-lockfile-test-"));
 });
 
 afterEach(() => {

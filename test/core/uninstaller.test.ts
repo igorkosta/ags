@@ -7,7 +7,7 @@ let tmpDir: string;
 let pkgDir: string;
 
 beforeEach(() => {
-  tmpDir = mkdtempSync(join(tmpdir(), "asm-uninstall-test-"));
+  tmpDir = mkdtempSync(join(tmpdir(), "ags-uninstall-test-"));
   pkgDir = join(tmpDir, "owasp");
   mkdirSync(join(pkgDir, "skills", "sast-analysis"), { recursive: true });
   mkdirSync(join(pkgDir, "skills", "sqli-detection"), { recursive: true });

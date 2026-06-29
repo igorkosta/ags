@@ -28,6 +28,11 @@ export async function fetchRegistry(sources: Source[]): Promise<RegistryIndex> {
     }
   }
 
+  if (Object.keys(merged).length === 0) {
+    console.error("Warning: no sources could be fetched — falling back to default registry");
+    return defaultRegistry as RegistryIndex;
+  }
+
   return merged;
 }
 

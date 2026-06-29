@@ -6,13 +6,13 @@ import { tmpdir } from "os";
 let tmpDir: string;
 
 beforeEach(() => {
-  tmpDir = mkdtempSync(join(tmpdir(), "asm-source-test-"));
-  process.env.ASM_CONFIG_DIR = tmpDir;
+  tmpDir = mkdtempSync(join(tmpdir(), "ags-source-test-"));
+  process.env.AGS_CONFIG_DIR = tmpDir;
 });
 
 afterEach(() => {
   rmSync(tmpDir, { recursive: true, force: true });
-  delete process.env.ASM_CONFIG_DIR;
+  delete process.env.AGS_CONFIG_DIR;
 });
 
 describe("source list command", () => {
