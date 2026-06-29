@@ -1,6 +1,6 @@
 {
   "name": "ags",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Agent Skills Manager — install, update, and manage AI agent skills",
   "type": "module",
   "bin": {
